@@ -18,4 +18,27 @@ numpy-1.14.5
 matplotlib-2.2.2
 xlrd-1.1.0
 
+xlrd顾名思义，就是excel文件的后缀名.xl文件read的扩展包。这个包只能读取文件，不能写入。写入需要使用另外一个包。
+但是这个包，其实也能读取.xlsx文件。 从excel中读取数据的过程比较简单，首先从xlrd包导入open_workbook，然后打开excel文件，
+把每个sheet里的每一行每一列数据都读取出来即可。很明显，这是个循环过程。
+
+from xlrd import open_workbook
+x_data1=[]
+y_data1=[]
+wb = open_workbook('phase_detector.xlsx')
+for s in wb.sheets():
+    print('Sheet:',s.name)
+    for row in range(s.nrows):
+        print('the row is:',row)
+        values = []
+        for col in range(s.ncols):
+            values.append(s.cell(row,col).value)
+        print(values)
+        x_data1.append(values[0])
+        y_data1.append(values[1])
+
+打开excel文件后，首先对文件内的sheet进行循环，这是最外层循环；在每个sheet内，进行第二次循环，行循环；在每行内，进行列循环，这是第三层循环。
+在最内层列循环内，取出行列值，复制到新建的values列表内，很明显，源数据有几列，values列表就有几个元素。我们例子中的excel文件有两列，
+分别对应角度和DC值。所以在列循环结束后，我们将取得的数据保存到x_data1和y_data1这两个列表中。
+
 ```
